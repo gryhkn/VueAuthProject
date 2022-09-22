@@ -9,21 +9,21 @@
                 <hr>
                 <form @submit.prevent="onSubmit">
                     <div class="form-group">
-                        <label>E-posta Adresiniz</label>
+                        <label>E-mail</label>
                         <input v-model="user.email" type="email" class="form-control"
-                               placeholder="E-posta adresinizi giriniz">
+                               placeholder="E-mail">
                     </div>
                     <div class="form-group">
-                        <label>Şifre</label>
-                        <input v-model="user.password" type="password" class="form-control" placeholder="Şifreniz...">
+                        <label>Password</label>
+                        <input v-model="user.password" type="password" class="form-control" placeholder="Password">
                     </div>
                     <div class="button-container d-flex  flex-column align-items-center">
                         <button type="submit" :class="{'btn-primary' : isUser, 'btn-success' : !isUser }"
                                 class="btn btn-block mb-2">
-                            {{ isUser ? 'Giriş Yap' : 'Kayıt Ol' }}
+                            {{ isUser ? 'Log in' : 'Register' }}
                         </button>
                         <a href="#" @click.prevent="isUser=!isUser" class="text-secondary">
-                            {{ isUser ? 'Üye değilim' : 'Üyeliğim var'}}
+                            {{ isUser ? 'I dont have an account' : 'I have an account' }}
                         </a>
                     </div>
                 </form>
@@ -44,7 +44,10 @@
         },
         methods: {
             onSubmit() {
-                alert(this.user)
+              this.$store.dispatch("login", { ...this.user, isUser: this.isUser })
+                  .then(response => {
+                       this.$router.push("/")
+                  })
             }
         }
     }
