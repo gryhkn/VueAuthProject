@@ -27,6 +27,7 @@ const store = new Vuex.Store({
                 }
                 else {
                     router.push('/auth') ;
+                    return false
                 }
             },
         login({commit,dispatch, state}, autData) {
