@@ -1,6 +1,7 @@
 import Vue from 'vue' ;
 import Vuex from 'vuex' ;
 import axios from "axios";
+import { router } from './router.js' ;
 
 Vue.use(Vuex) ;
 
@@ -18,6 +19,16 @@ const store = new Vuex.Store({
         }
     },
     actions: {
+        initAuth({commit, dispatch}) {
+            let token = localStorage.getItem('token') ;
+            if (token) {
+                    commit("setToken", token)
+                    router.push('/') ;
+                }
+                else {
+                    router.push('/auth') ;
+                }
+            },
         login({commit,dispatch, state}, autData) {
             let authLink = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key="
             if (autData.isUser) {
@@ -33,10 +44,12 @@ const store = new Vuex.Store({
                 .then(response => {
                     commit("setToken", response.data.idToken);
                     console.log(response.data.idToken);
+                    localStorage.setItem("token", response.data.idToken);
                 })
         },
         logout({commit,dispatch, state}) {
             commit("clearToken");
+            localStorage.removeItem("token");
         },
     },
     getters: {
