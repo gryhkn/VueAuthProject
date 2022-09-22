@@ -23,12 +23,15 @@
   export default {
     methods: {
       logout() {
+        this.$store.dispatch("logout").then(() => {
+          this.$router.push("/auth");
+        });
       }
     },
     computed: {
       logoutClass() {
         return {
-          'd-none': false
+          'd-none': !this.$store.getters.isAuthenticated
         }
       }
     }
